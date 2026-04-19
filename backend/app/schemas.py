@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class RoverTelemetry(BaseModel):
@@ -14,6 +14,21 @@ class RoverTelemetry(BaseModel):
 
 
 class MissionAssessment(BaseModel):
+    status: Literal["nominal", "caution", "critical"]
+    reasoning: str
+    recommended_action: str
+
+
+class MissionLogEntry(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    timestamp: datetime
+    x: float
+    y: float
+    z: float
+    battery: float
+    motor_torque: float
     status: Literal["nominal", "caution", "critical"]
     reasoning: str
     recommended_action: str
